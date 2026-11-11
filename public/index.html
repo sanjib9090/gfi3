@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f5">
+  <title>Candidate Review | Role fit evidence</title>
+  <link rel="stylesheet" href="/assets/style.css">
+  <script src="/assets/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img class="brand-logo" src="/gfi-logo.jpg" alt="Growth For Impact logo">
+      <span>Candidate Review</span><span class="divider"></span>
+      <span class="prototype">HIRING PROTOTYPE</span>
+    </div>
+    <div class="topright"><span class="statusdot"></span> Human-led review</div>
+  </header>
+  <main>
+    <div class="intro">
+      <div>
+        <div class="eyebrow">TALENT WORKSPACE <span> / </span> OVERVIEW</div>
+        <h1>Find the evidence, <em>not just a match.</em></h1>
+        <p>Explore candidates against two role briefs. Every score is traceable to resume text and meant to support—not replace—your judgment.</p>
+      </div>
+      <div class="uploadwrap">
+        <button class="primary" id="upload-button" disabled><span>＋</span> Loading job descriptions…</button>
+        <input id="file-input" type="file" accept=".pdf,.docx,.odt,.txt,.md,.rtf,.html,.htm" multiple hidden>
+        <small>PDF, DOCX, ODT, TXT, Markdown, RTF or HTML · 3.9 MB max</small>
+      </div>
+    </div>
+    <div id="notice-area" aria-live="polite"></div>
+    <div class="summary" id="summary"></div>
+    <div class="workspace">
+      <section class="list-panel">
+        <div class="section-head">
+          <div><div class="eyebrow">THE CANDIDATE PILE</div><h2>Role shortlists <span id="result-count">0</span></h2></div>
+          <button class="textbutton" id="method-button">How scoring works ↗</button>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Role">
+          <button role="tab" id="lca-tab" aria-selected="true" class="active">LCA consultant <span>↗</span></button>
+          <button role="tab" id="design-tab" aria-selected="false">UI/UX design intern <span>↗</span></button>
+        </div>
+        <div id="role-info"></div>
+        <div class="toolbar">
+          <label class="search"><span class="searchicon" aria-hidden="true"></span><input id="search" type="search" placeholder="Search resumes or skills" aria-label="Search resumes or skills"></label>
+          <label><span class="sr-only">Classification filter</span><select id="filter"><option value="all">All classifications</option><option>LCA</option><option>UI/UX</option><option>Both</option><option>Neither / uncertain</option><option value="review">Extraction review</option></select></label>
+          <label><span class="sr-only">Sort by</span><select id="sort"><option value="score">Score: high to low</option><option value="name">Filename: A to Z</option></select></label>
+        </div>
+        <div class="listhead"><span>RANK / CANDIDATE</span><span>CLASSIFICATION</span><span>EVIDENCE SCORE</span></div>
+        <div class="candidate-list" id="candidate-list"></div>
+      </section>
+      <aside class="detail" id="detail"></aside>
+    </div>
+    <footer><span>Candidate Review · An explainable screening prototype</span><span>For human review only</span></footer>
+  </main>
+  <div id="modal-area"></div>
+</body>
+</html>

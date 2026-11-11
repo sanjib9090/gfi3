@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+client/node_modules/
+user_data/
+.env*
+*.pyc

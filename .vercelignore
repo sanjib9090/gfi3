@@ -1,0 +1,6 @@
+client/node_modules
+user_data
+__pycache__
+*.pyc
+.env*
+*.png

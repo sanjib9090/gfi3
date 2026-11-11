@@ -1,0 +1,224 @@
+{
+  "lca": {
+    "name": "LCA consultant",
+    "short": "LCA",
+    "url": "https://tally.so/r/9q5plp",
+    "description": "Life cycle assessment · Chennai onsite",
+    "rules": [
+      {
+        "label": "Life cycle assessment / analysis",
+        "weight": 25,
+        "patterns": [
+          "\\blife[ -]?cycle (assessment|analysis|assessments|analyses)\\b",
+          "\\bLCA\\b"
+        ],
+        "jd_pattern": "life\\s*cycle assessment|\\bLCA\\b"
+      },
+      {
+        "label": "GaBi or SimaPro",
+        "weight": 20,
+        "patterns": [
+          "\\bSima\\s?Pro\\b",
+          "\\bGaBi\\b"
+        ],
+        "jd_pattern": "GaBi|SimaPro"
+      },
+      {
+        "label": "Inventory, modelling or data quality",
+        "weight": 15,
+        "patterns": [
+          "\\blife[ -]?cycle inventory\\b",
+          "\\bLCI\\b",
+          "\\bLCA (model|modelling|modeling)\\b",
+          "\\binventory (data|model)\\b"
+        ],
+        "jd_pattern": "life\\s*cycle inventory|\\bLCI\\b|data validation|modelling"
+      },
+      {
+        "label": "ISO 14040 / 14044",
+        "weight": 10,
+        "patterns": [
+          "\\bISO[ -]?14040\\b",
+          "\\bISO[ -]?14044\\b"
+        ],
+        "jd_pattern": "ISO\\s*1404[04]",
+        "review_patterns": [
+          "\\bISO\\s*:\\s*2006\\b"
+        ],
+        "review_note": "The ISO standard number is missing. An edition year alone does not establish ISO 14040 or 14044; verify the original certificate or ask the candidate. No points awarded until verified."
+      },
+      {
+        "label": "LCA project evidence",
+        "weight": 10,
+        "patterns": [
+          "(LCA|life[ -]?cycle (assessment|analysis)).{0,100}\\b(project|stud(y|ies)|conducted|performed|model)\\b",
+          "\\b(project|stud(y|ies)|conducted|performed).{0,100}(LCA|life[ -]?cycle (assessment|analysis))"
+        ],
+        "jd_pattern": "LCA projects|LCA studies|LCA study"
+      },
+      {
+        "label": "LCA experience (claimed or estimated)",
+        "weight": 10,
+        "patterns": [
+          "\\b\\d+(?:\\.\\d+)?\\s*(?:\\+|plus)?\\s*years?\\s+(?:of\\s+)?(?:experience\\s+in\\s+)?(?:LCA|life[ -]?cycle (?:assessment|analysis))\\b",
+          "\\b(?:LCA|life[ -]?cycle (?:assessment|analysis))(?:\\s+(?:project|professional|work))?\\s+experience\\s*(?:of|:|[-–])?\\s*\\d+(?:\\.\\d+)?\\s*(?:\\+|plus)?\\s*years?\\b"
+        ],
+        "jd_pattern": "\\d+\\s+to\\s+\\d+\\s+years|years of experience.*LCA",
+        "years_points": [
+          {
+            "min": 4,
+            "points": 10
+          },
+          {
+            "min": 2,
+            "points": 6
+          },
+          {
+            "min": 0.01,
+            "points": 3
+          }
+        ],
+        "experience_role_patterns": [
+          "\\b(?:LCA|life[ -]?cycle (?:assessment|analysis))\\b.*\\b(?:analyst|consultant|specialist|engineer|scientist|manager|lead|practitioner)\\b",
+          "\\b(?:analyst|consultant|specialist|engineer|scientist|manager|lead|practitioner)\\b.*\\b(?:LCA|life[ -]?cycle (?:assessment|analysis))\\b"
+        ],
+        "generic_role_pattern": "^(?:(?:senior|junior|lead|principal|chief|staff|assistant|associate|graduate|upskill|research|design|technical|trainee|r\\s*&\\s*d|environmental|sustainability|mechanical|product|project|life[ -]?cycle|assessment|lca)\\s*[-–—&/]*\\s*){0,8}(?:engineer|analyst|consultant|specialist|scientist|manager|developer|designer|director|trainee|researcher|intern|practitioner)\\b",
+        "experience_duty_patterns": [
+          "\\b(?:conducted|performed|led|managed|developed|built|completed|implemented|executed|ran|running|driving|performed|delivered)\\b.{0,180}\\b(?:lca|life[ -]?cycle (?:assessment|analysis|inventory)|environmental product declarations?)\\b",
+          "\\b(?:lca|life[ -]?cycle (?:assessment|analysis|inventory))\\b.{0,100}\\b(?:model(?:l?ing)?|stud(?:y|ies)|project|assessment|analys(?:is|es))\\b"
+        ]
+      },
+      {
+        "label": "Environmental product declaration",
+        "weight": 5,
+        "patterns": [
+          "\\bEPD\\b",
+          "environmental product declaration"
+        ],
+        "jd_pattern": "environmental product declaration|\\bEPD\\b"
+      },
+      {
+        "label": "Stakeholder or cross-functional work",
+        "weight": 5,
+        "patterns": [
+          "stakeholder",
+          "cross[ -]functional"
+        ],
+        "jd_pattern": "stakeholder|cross.functional|customer"
+      }
+    ],
+    "requirement_pattern": "\\b(must|experience|skills|figma|prototyp|research|psychology|14040|14044|years?|projects?|data|onsite|relocat|travel|language|education|collaborat|visual|user|design|lci|lca|epd)\\b",
+    "context_note": "The assignment specifies 4–6 years of experience; compare it with the current JD and verify manually.",
+    "experience_title_patterns": [
+      "\\b(?:LCA|life[ -]?cycle (?:assessment|analysis))\\b"
+    ],
+    "experience_duty_patterns": [
+      "\\b(?:conduct(?:ed|ing)?|perform(?:ed|ing)?|led|manag(?:ed|ing)|develop(?:ed|ing)|built|complet(?:ed|ing)|implement(?:ed|ing)|execut(?:ed|ing)|ran|running|driving|deliver(?:ed|ing)|working on|prepar(?:ed|ing))\\b.{0,180}\\b(?:LCA|life[ -]?cycle (?:assessment|analysis|inventory)|environmental product declarations?)\\b",
+      "\\b(?:LCA|life[ -]?cycle (?:assessment|analysis|inventory))\\b.{0,100}\\b(?:model(?:l?ing)?|stud(?:y|ies)|projects?|assessments?|analys(?:is|es))\\b"
+    ]
+  },
+  "design": {
+    "name": "UI/UX design intern",
+    "short": "UI/UX",
+    "url": "https://tally.so/r/0QovpQ",
+    "description": "Product design · Remote internship",
+    "rules": [
+      {
+        "label": "UI/UX or human-centered design",
+        "weight": 25,
+        "patterns": [
+          "\\bUI\\s*[/&-]\\s*UX\\b",
+          "\\bUX\\s*[/&-]\\s*UI\\b",
+          "user (experience|interface) design",
+          "\\bUX design",
+          "\\bUI design",
+          "human[ -]cent(red|ered) design"
+        ],
+        "jd_pattern": "UI/UX|UX/UI|human.centered|user.centered|user interfaces",
+        "partial_patterns": [
+          "\\b(?:responsive|mobile|web|app|website)\\s+(?:UI|user interface)\\b",
+          "\\b(?:designed|design|developed|built|created|implemented)\\b.{0,60}\\b(?:UI|user interface)\\b",
+          "\\b(?:UI|user interface)\\b.{0,60}\\b(?:designed|design|developed|built|created|implemented)\\b"
+        ],
+        "partial_points": 10
+      },
+      {
+        "label": "Figma",
+        "weight": 20,
+        "patterns": [
+          "\\bfigma\\b"
+        ],
+        "jd_pattern": "figma"
+      },
+      {
+        "label": "User research or testing",
+        "weight": 20,
+        "patterns": [
+          "user research",
+          "usability test",
+          "user testing",
+          "user interviews?",
+          "user (psychology|behavio[u]?r)",
+          "research (with|on) users"
+        ],
+        "jd_pattern": "user research|user psychology|user feedback|user testing"
+      },
+      {
+        "label": "Prototyping or wireframes",
+        "weight": 15,
+        "patterns": [
+          "prototyp",
+          "wirefram"
+        ],
+        "jd_pattern": "prototyp|wirefram"
+      },
+      {
+        "label": "Relevant design project evidence",
+        "weight": 10,
+        "patterns": [
+          "(\\bUX\\b|\\bUI\\s+design\\b|user experience|user interface design|figma|wirefram|prototyp|user research).{0,100}(project|case stud|designed|built|developed)",
+          "(project|case stud|designed|built|developed).{0,100}(\\bUX\\b|\\bUI\\s+design\\b|user experience|user interface design|figma|wirefram|prototyp|user research)"
+        ],
+        "jd_pattern": "website|job board|digital products",
+        "partial_patterns": [
+          "\\b(?:designed|design|developed|built|created|implemented)\\b.{0,60}\\b(?:responsive\\s+)?(?:UI|user interface)\\b"
+        ],
+        "partial_points": 5
+      },
+      {
+        "label": "Cross-functional collaboration",
+        "weight": 5,
+        "patterns": [
+          "cross[ -]functional",
+          "collaborat\\w*.{0,80}\\b(?:team|stakeholder|developer|engineer|designer|product|client)s?\\b",
+          "\\b(?:team|stakeholder|developer|engineer|designer|client)s?\\b.{0,80}collaborat\\w*",
+          "partner(?:ed|ing)\\s+with.{0,50}\\b(?:team|stakeholder|client)s?\\b"
+        ],
+        "jd_pattern": "cross.functional|collaborat",
+        "partial_patterns": [
+          "collaborat"
+        ],
+        "partial_points": 2
+      },
+      {
+        "label": "Visual design or design systems",
+        "weight": 5,
+        "patterns": [
+          "visual design",
+          "design system",
+          "visual identity",
+          "typography"
+        ],
+        "jd_pattern": "visual design|design language|visual identity"
+      }
+    ],
+    "requirement_pattern": "\\b(must|experience|skills|figma|prototyp|research|psychology|14040|14044|years?|projects?|data|onsite|relocat|travel|language|education|collaborat|visual|user|design|lci|lca|epd)\\b",
+    "experience_title_patterns": [
+      "\\b(?:UI\\s*[/&-]\\s*UX|UX\\s*[/&-]\\s*UI|UX|UI|user (?:experience|interface)|product design(?:er)?|interaction design(?:er)?)\\b"
+    ],
+    "experience_duty_patterns": [
+      "\\b(?:designed|created|developed|built|conducted|produced|implemented|creating|designing)\\b.{0,120}\\b(?:user (?:experience|interface|research|flows?)|UI|UX|wireframes?|prototypes?|usability test(?:ing)?|interactive design)\\b",
+      "\\b(?:UI/UX|UX/UI|user experience|user interface|wirefram(?:es?|ing)|usability testing|user research)\\b"
+    ]
+  }
+}
