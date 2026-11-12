@@ -70,8 +70,16 @@ async function readResponse(response) {
 }
 
 async function loadCandidates() {
+  var loadingScreen = document.getElementById('initial-loading');
+  var controller = new AbortController();
+  // Avoid leaving the loading screen spinning indefinitely after a network failure.
+  var timeout = setTimeout(function () { controller.abort(); }, 45000);
+  var slowMessage = setTimeout(function () {
+    document.getElementById('loading-help').textContent =
+      'This is taking longer than expected. Please wait; if it fails, refresh the page.';
+  }, 12000);
   try {
-    var response = await fetch('/api/candidates');
+    var response = await fetch('/api/candidates', { signal: controller.signal });
     var data = await readResponse(response);
     candidates = data.candidates;
     roles = data.roles;
@@ -80,11 +88,33 @@ async function loadCandidates() {
     uploadButton.innerHTML = '<span>＋</span> Upload a resume';
     if (data.warnings && data.warnings.length) showNotice(data.warnings.join(' '));
     renderPage();
+    loadingScreen.hidden = true;
   } catch (error) {
     uploadButton.innerHTML = '<span>＋</span> Upload unavailable';
-    showError(error);
-    renderPage();
+    document.getElementById('loading-title').textContent = 'Unable to load candidates';
+    document.getElementById('loading-message').textContent = error.name === 'AbortError'
+      ? 'Loading took too long. Please refresh the page and try again.'
+      : (error.message || 'The data could not be loaded').replace(/[.!?]+$/, '') + '. Please refresh the page and try again.';
+    document.getElementById('loading-help').textContent =
+      'If the problem continues, check the Supabase configuration and connection.';
+    document.getElementById('loading-spinner').hidden = true;
+    document.getElementById('loading-refresh').hidden = false;
+    loadingScreen.setAttribute('role', 'alert');
+  } finally {
+    clearTimeout(timeout);
+    clearTimeout(slowMessage);
   }
+}
+
+document.getElementById('loading-refresh').onclick = function () {
+  window.location.reload();
+};
+
+// Saved data is shown as saved, not as a fresh request to Tally.
+function jobSourceLabel(jd) {
+  if (jd.source === 'cached') return 'Saved Tally data' + (jd.http_status === 200 ? ' · HTTP 200' : '');
+  if (jd.source === 'live') return 'Tally fetched · HTTP 200';
+  return 'Bundled JSON · live fetch unavailable';
 }
 
 function countCandidates(test) {
@@ -112,7 +142,7 @@ function renderRole() {
     return;
   }
   var jd = role.jd || {};
-  var source = jd.source === 'live' ? 'Tally fetched · HTTP 200' : 'Saved JSON · live fetch unavailable';
+  var source = jobSourceLabel(jd);
   var fetchedAt = jd.fetched_at ? ' ' + new Date(jd.fetched_at).toLocaleString() : '';
   var warning = jd.warning ? '<div class="inline-alert"><b>Source warning:</b> ' + escapeHtml(jd.warning) + '</div>' : '';
   var experience = '';
@@ -125,7 +155,7 @@ function renderRole() {
   document.getElementById('role-info').innerHTML =
     '<div class="role-context"><div><b>' + escapeHtml(role.name) + '</b><span>' + escapeHtml(role.description) + '</span></div>' +
     '<a href="' + safeLink(role.url) + '" target="_blank" rel="noopener noreferrer">View job brief ↗</a></div>' +
-    '<div class="jd-bar"><div><span class="jd-dot' + (jd.source === 'live' ? '' : ' stale') + '"></span><b>' + escapeHtml(source) + '</b><small>' + escapeHtml(fetchedAt) + '</small></div>' +
+    '<div class="jd-bar"><div><span class="jd-dot' + (jd.source === 'snapshot' ? ' stale' : '') + '"></span><b>' + escapeHtml(source) + '</b><small>' + escapeHtml(fetchedAt) + '</small></div>' +
     '<button id="compare-button">Compare job requirements ↗</button></div>' + warning + experience;
   document.getElementById('compare-button').onclick = showRequirements;
 }
@@ -397,7 +427,7 @@ function showRequirements() {
     var role = roles[key];
     if (!role) return;
     var jd = role.jd || {};
-    var label = jd.source === 'live' ? 'Live Tally · HTTP 200' : 'Saved JSON · live fetch unavailable';
+    var label = jobSourceLabel(jd);
     if (jd.fetched_at) label += ' · ' + new Date(jd.fetched_at).toLocaleString();
     html += '<section class="job-card"><h3>' + escapeHtml(jd.title || role.name) + '</h3><p class="' + (jd.source === 'live' ? 'source-live' : 'source-stale') + '">' + escapeHtml(label) + '</p>' +
       '<a href="' + safeLink(role.url) + '" target="_blank" rel="noopener noreferrer">Open original job description ↗</a><h4>Requirements used in scoring</h4>';
@@ -414,7 +444,7 @@ function showRequirements() {
 }
 
 function showMethod() {
-  var html = '<p>Flask fetches the Tally descriptions and activates matching configured criteria. Each matched criterion earns its listed weight. Partial evidence earns partial points. Scores are normalized to 100; the same rules apply to supplied and uploaded resumes.</p>';
+  var html = '<p>Flask uses saved Tally descriptions when available and activates matching configured criteria. Each matched criterion earns its listed weight. Partial evidence earns partial points. Scores are normalized to 100; the same rules apply to supplied and uploaded resumes.</p>';
   ['lca', 'design'].forEach(function (key) {
     var role = roles[key];
     if (!role) return;

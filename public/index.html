@@ -9,20 +9,30 @@
   <script src="/assets/app.js" defer></script>
 </head>
 <body>
+  <div class="loading-screen" id="initial-loading" role="status" aria-live="polite" aria-atomic="true">
+    <div class="loading-card">
+      <img src="/gfi-logo.jpg" alt="" class="loading-logo">
+      <div class="loading-spinner" id="loading-spinner" aria-hidden="true"></div>
+      <h1 id="loading-title">Loading candidates</h1>
+      <p id="loading-message">Please wait while the resumes and job descriptions load. The first load may take a little longer.</p>
+      <p class="loading-help" id="loading-help">If loading fails, try refreshing the page.</p>
+      <button class="primary" id="loading-refresh" type="button" hidden>Refresh page</button>
+    </div>
+  </div>
   <header class="topbar">
     <div class="brand">
       <img class="brand-logo" src="/gfi-logo.jpg" alt="Growth For Impact logo">
       <span>Candidate Review</span><span class="divider"></span>
       <span class="prototype">HIRING PROTOTYPE</span>
     </div>
-    <div class="topright"><span class="statusdot"></span>Growth For Impact</div>
+    <div class="topright"><span class="statusdot"></span> Human-led review</div>
   </header>
   <main>
     <div class="intro">
       <div>
         <div class="eyebrow">TALENT WORKSPACE <span> / </span> OVERVIEW</div>
         <h1>Find the evidence, <em>not just a match.</em></h1>
-        <p>Explore candidates against two role briefs.</p>
+        <p>Explore candidates against two role briefs. Every score is traceable to resume text and meant to support—not replace—your judgment.</p>
       </div>
       <div class="uploadwrap">
         <button class="primary" id="upload-button" disabled><span>＋</span> Loading job descriptions…</button>

@@ -44,9 +44,9 @@ This copy contains no local uploaded resumes. Switching to Supabase does not cop
 
 ## Job descriptions and scoring configuration
 
-`data/roles.json` contains the two source URLs, role labels, configurable rule weights and text patterns; the job description itself is not embedded in `app.py`. Flask fetches the configured Tally pages, extracts their text, writes the extracted JSON to the Supabase bucket, reads it back, and maps requirement text to the rules. Results are cached for up to five minutes per instance.
+`data/roles.json` contains the two source URLs, role labels, configurable rule weights and text patterns; the job description itself is not embedded in `app.py`. Flask checks the Supabase `jds/` folder first. If a saved description exists, it is reused without a Tally request, even after a cold start. Otherwise Flask fetches Tally once and saves the extracted JSON to Supabase. The page displays the last fetch time, not a new fetch time. The mapped result is also cached for up to five minutes per instance.
 
-If a live fetch fails, the app uses the last saved JSON or the bundled dated `data/jd_lca.json` / `data/jd_design.json` snapshots if no saved copy exists. It labels the fallback and refuses to score a description that cannot be mapped to enough criteria. Job rules use keyword matching; manually verify source text, evidence and scoring weights. Uploaded resumes are re-evaluated against the loaded criteria when the candidate list loads.
+If no saved JSON exists and a Tally fetch fails, the app uses the bundled dated `data/jd_lca.json` / `data/jd_design.json` snapshot. When saved JSON exists, Tally is not contacted. To intentionally fetch a new description, remove the corresponding `jds/lca.json` or `jds/design.json` from the private bucket and redeploy (or allow the five-minute in-memory cache to expire). The next load attempts a fetch. It labels the fallback and refuses to score a description that cannot be mapped to enough criteria. Job rules use keyword matching; manually verify source text, evidence and scoring weights. Uploaded resumes are re-evaluated against the loaded criteria when the candidate list loads. The initial screen shows a loading message; after an error or timeout, it offers a refresh button.
 
 ## Extraction and limitations
 

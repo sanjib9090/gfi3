@@ -198,6 +198,19 @@ def fetch_job(key, role):
     # Only the configured Tally URLs are accepted, not URLs supplied by a web request.
     if not re.fullmatch(r'https://tally\.so/r/[A-Za-z0-9]+', url):
         raise ValueError('Only configured https://tally.so/r/... job pages are supported.')
+    # Read the previously fetched JD first. It persists across Vercel cold starts.
+    # Never overwrite an existing saved JD merely because someone opened the app.
+    try:
+        saved = read_json(f'jds/{key}.json')
+    except FileNotFoundError:
+        saved = None
+    except (ValueError, TypeError):
+        raise StorageConfigurationError(f'Saved {key} job description is invalid. Check the JSON in the private bucket.') from None
+    if saved is not None:
+        if not isinstance(saved, dict) or not isinstance(saved.get('lines'), list) or not saved.get('title'):
+            raise StorageConfigurationError(f'Saved {key} job description is invalid. Check the JSON in the private bucket.')
+        saved.update(source='cached', url=url)
+        return saved
     try:
         with requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (compatible; CandidateReview/1.0)'},
                           timeout=(4, 9), allow_redirects=False, stream=True) as response:
@@ -215,17 +228,13 @@ def fetch_job(key, role):
         if supported < 3:
             raise ValueError('The live job description cannot be mapped reliably.')
     except (requests.RequestException, ValueError, TypeError):
-        try:
-            jd = read_json(f'jds/{key}.json')
-        except FileNotFoundError:
-            jd = json.loads((ROOT / 'data' / f'jd_{key}.json').read_text(encoding='utf-8'))
+        jd = json.loads((ROOT / 'data' / f'jd_{key}.json').read_text(encoding='utf-8'))
         jd.update(source='snapshot', http_status=None,
-                  warning='Live Tally fetch failed; the saved JSON may be out of date.')
+                  warning='Live Tally fetch failed; the bundled JSON may be out of date.')
     else:
-        jd.update(source='live', http_status=200, fetched_at=datetime.now(timezone.utc).isoformat())
-        # Persist and read back the JSON; rankings consume the stored JD, not Python literals.
+        jd.update(source='cached', http_status=200, fetched_at=datetime.now(timezone.utc).isoformat(), url=url)
+        # Save once and reuse this copy on subsequent page loads and cold starts.
         save_json(f'jds/{key}.json', jd)
-        jd = read_json(f'jds/{key}.json')
     jd['url'] = url
     return jd
 
