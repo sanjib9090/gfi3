@@ -1,4 +1,3 @@
-"""Flask resume-review prototype. JD definitions and fetched text live in JSON."""
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 from calendar import monthrange
